@@ -3,8 +3,8 @@ Host jupyterlab on cloud
 
 
 ## How to run
-install python version 3.10.12. \n
-clone the repo \n
-run \n
-```pip install -r requirements.txt``` \n
+Install python version 3.10.12. <br />
+Clone the repo ```git clone https://github.com/punhat/jupyter_cloud.git```<br />
+Run <br />
+```pip install -r requirements.txt``` <br />
 ```jupyter lab notebooks --ip 0.0.0.0 --no-browser --allow-root```
