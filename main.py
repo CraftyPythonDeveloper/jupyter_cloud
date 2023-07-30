@@ -5,7 +5,7 @@ import shutil
 
 def run_command(command):
     try:
-        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        result = subprocess.run(command, shell=True, check=True, text=True, capture_output=True)
         if result.returncode == 0:
             print(f"Command {command} ran successfully")
             return True, result.stdout
@@ -13,7 +13,7 @@ def run_command(command):
         print(result.stderr)
         return False, result.stderr
     except subprocess.CalledProcessError as e:
-        print(f"Exception while running the command.. {e}")
+        print(f"Exception while running the command.. {e.stderr}")
         return False, command
 
 
@@ -22,14 +22,15 @@ if __name__ == "__main__":
     # password = toor
     status, output = run_command("jupyter --config-dir")
     try:
-        shutil.move("config/jupyter_lab_config.py", output.strip("\n"))
-        shutil.move("config/jupyter_server_config.json", output.strip("\n"))
+        shutil.copy("config/jupyter_lab_config.py", output.strip("\n"))
+        shutil.copy("config/jupyter_server_config.json", output.strip("\n"))
         print("copied the configs..")
     except shutil.Error:
         os.remove(os.path.join(output.strip("\n"), "jupyter_lab_config.py"))
         os.remove(os.path.join(output.strip("\n"), "jupyter_server_config.json"))
-        shutil.move("config/jupyter_lab_config.py", output.strip("\n"))
-        shutil.move("config/jupyter_server_config.json", output.strip("\n"))
+        shutil.copy("config/jupyter_lab_config.py", output.strip("\n"))
+        shutil.copy("config/jupyter_server_config.json", output.strip("\n"))
         print("configs already exists..")
     os.chdir("notebooks")
-    run_command("jupyter lab")
+    run_command("jupyter lab --ip 0.0.0.0")
+    print("Server is running...")
