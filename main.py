@@ -22,15 +22,14 @@ if __name__ == "__main__":
     # password = toor
     status, output = run_command("jupyter --config-dir")
     try:
-        shutil.copy("config/jupyter_lab_config.py", output.strip("\n"))
-        shutil.copy("config/jupyter_server_config.json", output.strip("\n"))
-        print("copied the configs..")
-    except shutil.Error:
         os.remove(os.path.join(output.strip("\n"), "jupyter_lab_config.py"))
         os.remove(os.path.join(output.strip("\n"), "jupyter_server_config.json"))
-        shutil.copy("config/jupyter_lab_config.py", output.strip("\n"))
-        shutil.copy("config/jupyter_server_config.json", output.strip("\n"))
-        print("configs already exists..")
+    except shutil.Error:
+        pass
+    shutil.copy("config/jupyter_lab_config.py", output.strip("\n"))
+    shutil.copy("config/jupyter_server_config.json", output.strip("\n"))
+    shutil.copy("config/migrated", output.strip("\n"))
+    print("configs already exists..")
     os.chdir("notebooks")
     run_command("jupyter lab --ip 0.0.0.0")
     print("Server is running...")
