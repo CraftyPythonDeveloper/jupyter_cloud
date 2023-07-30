@@ -24,7 +24,7 @@ if __name__ == "__main__":
     try:
         os.remove(os.path.join(output.strip("\n"), "jupyter_lab_config.py"))
         os.remove(os.path.join(output.strip("\n"), "jupyter_server_config.json"))
-    except shutil.Error:
+    except:
         pass
     shutil.copy("config/jupyter_lab_config.py", output.strip("\n"))
     shutil.copy("config/jupyter_server_config.json", output.strip("\n"))
